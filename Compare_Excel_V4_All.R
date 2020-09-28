@@ -9,10 +9,9 @@ rm(list=ls())
 setwd(getwd())
 PathName = setwd(getwd())
 
-
 MainFileName = c("LGG XIAP Positive")
 
-library(xlsx)
+library(xlsx) # Error: there is no package called ¡¥rJava¡¦
 # https://www.cnblogs.com/loca/p/4682568.html
 # https://earthworm2016.pixnet.net/blog/post/320495233-r-%E8%B3%87%E6%96%99%E5%8C%AF%E5%87%BA-excel%E6%AA%94
 # https://stackoverflow.com/questions/55185436/rjava-non-zero-exit-status
@@ -23,27 +22,18 @@ library(xlsx)
 # install.packages("readxl")
 library(readxl)
 
-
-########## Load the file
-#Main <- read.xlsx(file = MainFileName,sheetIndex=Enrichment,startRow = 3,endRow = 26,header = F,colIndex =3:5,encoding = "UTF-8")
-
-#read_excel('test.xlsx',1) ##1 is the position of the sheet, it can also enter the name of a sheet. 
+# https://tutorials.methodsconsultants.com/posts/reading-and-writing-excel-files-with-r-using-readxl-and-writexl/
+library(writexl)
 
 library("data.table")
 library("dplyr")
 # https://www.zhihu.com/question/39755875
 
-# https://tutorials.methodsconsultants.com/posts/reading-and-writing-excel-files-with-r-using-readxl-and-writexl/
-library(writexl)
 
 
 
-
-######### Loop
-
-
+########## Load the file
 FolderName = c("Metastasis") 
-
 
 Main_1 <- as.data.frame(read_excel(paste0(PathName,"/",MainFileName,".xlsx"),"Enrichment"))
 Main_1 <- data.table(Main_1)
@@ -52,7 +42,7 @@ first_category_name = list.files(FolderName)            #list.files©R¥O±o¨ì"APP¾
 dir = paste("/",FolderName,"/",first_category_name,sep="")   #¥Îpaste©R¥Oºc«Ø¸ô®|ÅÜ¼Ædir,²Ä¤@¯Å¥Ø¿ýªº¸Ô²Ó¸ô®|¡i­×§ï¡j
 n = length(dir)                                       #Åª¨údirªø«×¡A¤]´N¬O¡GÁ`¦@¦³¦h¤Ö­Ó¤@¯Å¥Ø¿ý                                                     
 
-##########
+######### Loop
 Intersect_1 <- c()
 CountInterset <- c()
 SubFileName <- c()
@@ -69,13 +59,12 @@ for(i in 1:n){         #¹ï©ó¨C­Ó¤@¯Å¥Ø¿ý(¤å¥ó§¨)
   # https://www.zhihu.com/question/39755875  
   Intersect_1<- semi_join(Main_1,Sub_1,by="Term")
   Intersect_1<- unique(Intersect_1, by = "Term")
-#  dim(Intersect_1)
+#  Intersect_1 <- Intersect_1[!grep("Member$", Intersect_1$GroupID),]
+
   
   write_xlsx(list(Intersec = Intersect_1,Main = Main_1,Sub = Sub_1),paste0(PathName,"/Intersec_",MainFileName,"_AND_",SubFileName2))
   
   CountInterset[i] <- nrow(Intersect_1)
-#  SumTable[i] <- c(SubFileName,CountInterset)
-#  SubFileName[i] <- SubFileName
  
 }
 
