@@ -11,7 +11,7 @@ PathName = setwd(getwd())
 
 MainFileName = c("LGG XIAP Positive")
 
-library(xlsx)
+library(xlsx) # Error: there is no package called ‘rJava’
 # https://www.cnblogs.com/loca/p/4682568.html
 # https://earthworm2016.pixnet.net/blog/post/320495233-r-%E8%B3%87%E6%96%99%E5%8C%AF%E5%87%BA-excel%E6%AA%94
 # https://stackoverflow.com/questions/55185436/rjava-non-zero-exit-status
@@ -35,12 +35,7 @@ library("dplyr")
 # https://tutorials.methodsconsultants.com/posts/reading-and-writing-excel-files-with-r-using-readxl-and-writexl/
 library(writexl)
 
-
-
-
 ######### Loop
-
-
 FolderName = c("Metastasis") 
 
 
@@ -68,16 +63,12 @@ for(i in 1:n){         #對於每個一級目錄(文件夾)
   # https://www.zhihu.com/question/39755875  
   Intersect_1<- semi_join(Main_1,Sub_1,by="Term")
   Intersect_1<- unique(Intersect_1, by = "Term")
-#  Intersect_1<- as.data.frame(Intersect_1)
   Intersect_1 <- Intersect_1[!grep("Member$", Intersect_1$GroupID),]
-  #xxx Intersect_1[ , -match(c("Member"),names(Intersect_1)), drop=F]
-#  dim(Intersect_1)
+
   
   write_xlsx(list(Intersec = Intersect_1,Main = Main_1,Sub = Sub_1),paste0(PathName,"/S_Intersec_",MainFileName,"_AND_",SubFileName2))
   
   CountInterset[i] <- nrow(Intersect_1)
-#  SumTable[i] <- c(SubFileName,CountInterset)
-#  SubFileName[i] <- SubFileName
  
 }
 
