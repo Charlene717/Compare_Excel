@@ -99,7 +99,7 @@ merge_1 <- merge_1[!is.na(merge_1$Term),]
 merge_2<- unique(merge_1)
 
 SumTable <- as.data.frame(cbind(SubFileName,CountInterset))
-write_xlsx(SumTable,paste0(PathName,"/",FolderName,"_Result_SUM","/S_Intersec_",MainFileName,"_SumTable.xlsx"))
+write_xlsx(list(Count = SumTable,merge = merge_2,merge_ori = merge_1),paste0(PathName,"/",FolderName,"_Result_SUM","/S_Intersec_",MainFileName,"_SumTable.xlsx"))
 
 
 ####################################################################################################################################################################################
