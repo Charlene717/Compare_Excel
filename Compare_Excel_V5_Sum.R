@@ -52,15 +52,25 @@ first_category_name = list.files(FolderName)            #list.files©R¥O±o¨ì"APP¾
 dir = paste("/",FolderName,"/",first_category_name,sep="")   #¥Îpaste©R¥Oºc«Ø¸ô®|ÅÜ¼Ædir,²Ä¤@¯Å¥Ø¿ýªº¸Ô²Ó¸ô®|¡i­×§ï¡j
 n = length(dir)                                       #Åª¨údirªø«×¡A¤]´N¬O¡GÁ`¦@¦³¦h¤Ö­Ó¤@¯Å¥Ø¿ý                                              
 
+
+# n_sub<-rep(0,n)
+# n_sub<-as.data.frame(n_sub)
+# n_sub<-t(n_sub)
+# head(n_sub)                                          #n_sub¬O¨C­Ó¤@¯Å¥Ø¿ý(¤å¥ó§¨)¤U¦³¦h¤Ö­Ó¤å¥ó¡A¤]´N¬O¡G¦³¦h¤Ö­Ó¤G¯Å¥Ø¿ý¡Aªì©l¤Æ¬°0¡A¥Î©ó«á­±ªº¾Þ§@
+
 ##########
 Intersect_1 <- c()
 CountInterset <- c()
 SubFileName <- c()
-
+Intersect_1_Sum <- c() 
+merge_1 <- as.data.frame(matrix(nrow=1,ncol=9))
+names(merge_1)<-c('GroupID','Category','Term','Description','LogP','Log(q-value)','InTerm_InList','Genes','Symbols')
 for(i in 1:n){         #¹ï©ó¨C­Ó¤@¯Å¥Ø¿ý(¤å¥ó§¨)
   b=list.files(dir[i]) #b¬O¦C¥X¨C­Ó¤@¯Å¥Ø¿ý(¤å¥ó§¨)¤¤¨C­Óxlsx¤å¥óªº¦WºÙ
-
+#  n_sub[i]=length(b)   #±o¨ì¤@¯Å¥Ø¿ý(¤å¥ó§¨)¤Uxlsxªº¤å¥ó­Ó¼Æ:n_sub
   
+#  for(j in 1:n_sub[i]){     #¹ï©ó¨C­Ó¤@¯Å¥Ø¿ý(¤å¥ó§¨)¤Uªº¨C­Óxlsx¤å¥ó  
+    
   Sub_1 <- as.data.frame(read_excel(paste0(PathName,dir[i],sep=""),"Enrichment"))
   Sub_1 <- data.table(Sub_1)
   SubFileName[i] <- first_category_name[i]
@@ -71,15 +81,19 @@ for(i in 1:n){         #¹ï©ó¨C­Ó¤@¯Å¥Ø¿ý(¤å¥ó§¨)
   Intersect_1<- unique(Intersect_1, by = "Term")
 #  Intersect_1<- as.data.frame(Intersect_1)
   Intersect_1 <- Intersect_1[!grep("Member$", Intersect_1$GroupID),]
+  names(Intersect_1)<-c('GroupID','Category','Term','Description','LogP','Log(q-value)','InTerm_InList','Genes','Symbols')
   #xxx Intersect_1[ , -match(c("Member"),names(Intersect_1)), drop=F]
 #  dim(Intersect_1)
 
   write_xlsx(list(Intersec = Intersect_1,Main = Main_1,Sub = Sub_1),paste0(PathName,"/",FolderName,"_Result_SUM","/S_Intersec_",MainFileName,"_AND_",SubFileName2))
   
   CountInterset[i] <- nrow(Intersect_1)
+  
+  merge_1 <- rbind(merge_1,Intersect_1)
 #  SumTable[i] <- c(SubFileName,CountInterset)
 #  SubFileName[i] <- SubFileName
- 
+#  }
+
 }
 
 SumTable <- as.data.frame(cbind(SubFileName,CountInterset))
