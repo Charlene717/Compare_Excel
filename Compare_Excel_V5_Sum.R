@@ -1,17 +1,20 @@
 # http://www.zendei.com/article/2409.html
-#§@¥Î¡GÅª¨ú¨C­Ó¤å¥ó§¨¤Uªºexcel¡A¨Ã±N¨ä¦X¨Ö¦¨¤@­Ó¤å¥ó¡C
-#¦@¦³3¯Å¡G²Ä¤@¯Å¡G¤å¥ó§¨¦W¡A²Ä¤G¯Å¡G¤å¥ó§¨¤¤ªºxlsx¤å¥ó¦W¡A²Ä¤T¯Å¡Gxlsx¤å¥ó¤¤ªº¨C¦æ
-#¥N½X«á­±µùÄÀ¤¤­Y¦³¡G¡i­×§ï¡j¦r¼Ë¡A«hªí¥Ü¦pªG­n¦b§A¾÷¾¹¤W¹B¦æ¸Ó¬q¥N½X®É¡A»İ­n¶i¦æ¬ÛÀ³ªº­×§ï¡C
+#ä½œç”¨ï¼šè®€å–æ¯å€‹æ–‡ä»¶å¤¾ä¸‹çš„excelï¼Œä¸¦å°‡å…¶åˆä½µæˆä¸€å€‹æ–‡ä»¶ã€‚
+#å…±æœ‰3ç´šï¼šç¬¬ä¸€ç´šï¼šæ–‡ä»¶å¤¾åï¼Œç¬¬äºŒç´šï¼šæ–‡ä»¶å¤¾ä¸­çš„xlsxæ–‡ä»¶åï¼Œç¬¬ä¸‰ç´šï¼šxlsxæ–‡ä»¶ä¸­çš„æ¯è¡Œ
+#ä»£ç¢¼å¾Œé¢è¨»é‡‹ä¸­è‹¥æœ‰ï¼šã€ä¿®æ”¹ã€‘å­—æ¨£ï¼Œå‰‡è¡¨ç¤ºå¦‚æœè¦åœ¨ä½ æ©Ÿå™¨ä¸Šé‹è¡Œè©²æ®µä»£ç¢¼æ™‚ï¼Œéœ€è¦é€²è¡Œç›¸æ‡‰çš„ä¿®æ”¹ã€‚
 
-##########¤èªk¤@¡G³Ì²×³æ¿W«O¦s¦b¨C­Ó¤å¥ó§¨¤U
+##########æ–¹æ³•ä¸€ï¼šæœ€çµ‚å–®ç¨ä¿å­˜åœ¨æ¯å€‹æ–‡ä»¶å¤¾ä¸‹
 rm(list=ls())
-# setwd("E:/cnblogs")                                    #³]©w¤u§@¥Ø¿ı¡i­×§ï¡j
+# setwd("E:/cnblogs")                                    #è¨­å®šå·¥ä½œç›®éŒ„ã€ä¿®æ”¹ã€‘
 setwd(getwd())
 PathName = setwd(getwd())
 
+FolderName = c("Metastasis") 
+dir.create(paste0(PathName,"/",FolderName,"_Result_SUM"))
+
 MainFileName = c("LGG XIAP Positive")
 
-library(xlsx) # Error: there is no package called ¡¥rJava¡¦
+library(xlsx)
 # https://www.cnblogs.com/loca/p/4682568.html
 # https://earthworm2016.pixnet.net/blog/post/320495233-r-%E8%B3%87%E6%96%99%E5%8C%AF%E5%87%BA-excel%E6%AA%94
 # https://stackoverflow.com/questions/55185436/rjava-non-zero-exit-status
@@ -22,33 +25,40 @@ library(xlsx) # Error: there is no package called ¡¥rJava¡¦
 # install.packages("readxl")
 library(readxl)
 
-# https://tutorials.methodsconsultants.com/posts/reading-and-writing-excel-files-with-r-using-readxl-and-writexl/
-library(writexl)
+
+########## Load the file
+#Main <- read.xlsx(file = MainFileName,sheetIndex=Enrichment,startRow = 3,endRow = 26,header = F,colIndex =3:5,encoding = "UTF-8")
+
+#read_excel('test.xlsx',1) ##1 is the position of the sheet, it can also enter the name of a sheet. 
 
 library("data.table")
 library("dplyr")
 # https://www.zhihu.com/question/39755875
 
+# https://tutorials.methodsconsultants.com/posts/reading-and-writing-excel-files-with-r-using-readxl-and-writexl/
+library(writexl)
 
 
 
-########## Load the file
-FolderName = c("Metastasis") 
+
+######### Loop
+
+
 
 Main_1 <- as.data.frame(read_excel(paste0(PathName,"/",MainFileName,".xlsx"),"Enrichment"))
 Main_1 <- data.table(Main_1)
 
-first_category_name = list.files(FolderName)            #list.files©R¥O±o¨ì"APP¾ã²z¡¨¤å¥ó§¨¤U©Ò¦³¤å¥ó§¨ªº¦WºÙ¡i­×§ï¡j
-dir = paste("/",FolderName,"/",first_category_name,sep="")   #¥Îpaste©R¥Oºc«Ø¸ô®|ÅÜ¼Ædir,²Ä¤@¯Å¥Ø¿ıªº¸Ô²Ó¸ô®|¡i­×§ï¡j
-n = length(dir)                                       #Åª¨údirªø«×¡A¤]´N¬O¡GÁ`¦@¦³¦h¤Ö­Ó¤@¯Å¥Ø¿ı                                                     
+first_category_name = list.files(FolderName)            #list.fileså‘½ä»¤å¾—åˆ°"APPæ•´ç†â€æ–‡ä»¶å¤¾ä¸‹æ‰€æœ‰æ–‡ä»¶å¤¾çš„åç¨±ã€ä¿®æ”¹ã€‘
+dir = paste("/",FolderName,"/",first_category_name,sep="")   #ç”¨pasteå‘½ä»¤æ§‹å»ºè·¯å¾‘è®Šæ•¸dir,ç¬¬ä¸€ç´šç›®éŒ„çš„è©³ç´°è·¯å¾‘ã€ä¿®æ”¹ã€‘
+n = length(dir)                                       #è®€å–diré•·åº¦ï¼Œä¹Ÿå°±æ˜¯ï¼šç¸½å…±æœ‰å¤šå°‘å€‹ä¸€ç´šç›®éŒ„                                                     
 
-######### Loop
+##########
 Intersect_1 <- c()
 CountInterset <- c()
 SubFileName <- c()
 
-for(i in 1:n){         #¹ï©ó¨C­Ó¤@¯Å¥Ø¿ı(¤å¥ó§¨)
-  b=list.files(dir[i]) #b¬O¦C¥X¨C­Ó¤@¯Å¥Ø¿ı(¤å¥ó§¨)¤¤¨C­Óxlsx¤å¥óªº¦WºÙ
+for(i in 1:n){         #å°æ–¼æ¯å€‹ä¸€ç´šç›®éŒ„(æ–‡ä»¶å¤¾)
+  b=list.files(dir[i]) #bæ˜¯åˆ—å‡ºæ¯å€‹ä¸€ç´šç›®éŒ„(æ–‡ä»¶å¤¾)ä¸­æ¯å€‹xlsxæ–‡ä»¶çš„åç¨±
 
   
   Sub_1 <- as.data.frame(read_excel(paste0(PathName,dir[i],sep=""),"Enrichment"))
@@ -59,17 +69,21 @@ for(i in 1:n){         #¹ï©ó¨C­Ó¤@¯Å¥Ø¿ı(¤å¥ó§¨)
   # https://www.zhihu.com/question/39755875  
   Intersect_1<- semi_join(Main_1,Sub_1,by="Term")
   Intersect_1<- unique(Intersect_1, by = "Term")
+#  Intersect_1<- as.data.frame(Intersect_1)
   Intersect_1 <- Intersect_1[!grep("Member$", Intersect_1$GroupID),]
+  #xxx Intersect_1[ , -match(c("Member"),names(Intersect_1)), drop=F]
+#  dim(Intersect_1)
 
-  
-  write_xlsx(list(Intersec = Intersect_1,Main = Main_1,Sub = Sub_1),paste0(PathName,"/S_Intersec_",MainFileName,"_AND_",SubFileName2))
+  write_xlsx(list(Intersec = Intersect_1,Main = Main_1,Sub = Sub_1),paste0(PathName,"/",FolderName,"_Result_SUM","/S_Intersec_",MainFileName,"_AND_",SubFileName2))
   
   CountInterset[i] <- nrow(Intersect_1)
+#  SumTable[i] <- c(SubFileName,CountInterset)
+#  SubFileName[i] <- SubFileName
  
 }
 
 SumTable <- as.data.frame(cbind(SubFileName,CountInterset))
-write_xlsx(SumTable,paste0(PathName,"/S_Intersec_",MainFileName,"_SumTable.xlsx"))
+write_xlsx(SumTable,paste0(PathName,"/",FolderName,"_Result_SUM","/S_Intersec_",MainFileName,"_SumTable.xlsx"))
 
 
 ####################################################################################################################################################################################
