@@ -1,11 +1,11 @@
 # http://www.zendei.com/article/2409.html
-#作用：讀取每個文件夾下的excel，並將其合併成一個文件。
-#共有3級：第一級：文件夾名，第二級：文件夾中的xlsx文件名，第三級：xlsx文件中的每行
-#代碼後面註釋中若有：【修改】字樣，則表示如果要在你機器上運行該段代碼時，需要進行相應的修改。
+#�@�ΡGŪ���C�Ӥ�󧨤U��excel�A�ñN��X�֦��@�Ӥ��C
+#�@��3�šG�Ĥ@�šG��󧨦W�A�ĤG�šG��󧨤���xlsx���W�A�ĤT�šGxlsx��󤤪��C��
+#�N�X�᭱�������Y���G�i�ק�j�r�ˡA�h���ܦp�G�n�b�A�����W�B��Ӭq�N�X�ɡA�ݭn�i��������ק�C
 
-##########方法一：最終單獨保存在每個文件夾下
+##########��k�@�G�̲׳�W�O�s�b�C�Ӥ�󧨤U
 rm(list=ls())
-# setwd("E:/cnblogs")                                    #設定工作目錄【修改】
+# setwd("E:/cnblogs")                                    #�]�w�u�@�ؿ��i�ק�j
 setwd(getwd())
 PathName = setwd(getwd())
 
@@ -48,17 +48,17 @@ library(writexl)
 Main_1 <- as.data.frame(read_excel(paste0(PathName,"/",MainFileName,".xlsx"),"Enrichment"))
 Main_1 <- data.table(Main_1)
 
-first_category_name = list.files(FolderName)            #list.files命令得到"APP整理”文件夾下所有文件夾的名稱【修改】
-dir = paste("/",FolderName,"/",first_category_name,sep="")   #用paste命令構建路徑變數dir,第一級目錄的詳細路徑【修改】
-n = length(dir)                                       #讀取dir長度，也就是：總共有多少個一級目錄                                                     
+first_category_name = list.files(FolderName)            #list.files�R�O�o��"APP��z����󧨤U�Ҧ���󧨪��W�١i�ק�j
+dir = paste("/",FolderName,"/",first_category_name,sep="")   #��paste�R�O�c�ظ��|�ܼ�dir,�Ĥ@�ťؿ����ԲӸ��|�i�ק�j
+n = length(dir)                                       #Ū��dir���סA�]�N�O�G�`�@���h�֭Ӥ@�ťؿ�                                              
 
 ##########
 Intersect_1 <- c()
 CountInterset <- c()
 SubFileName <- c()
 
-for(i in 1:n){         #對於每個一級目錄(文件夾)
-  b=list.files(dir[i]) #b是列出每個一級目錄(文件夾)中每個xlsx文件的名稱
+for(i in 1:n){         #���C�Ӥ@�ťؿ�(���)
+  b=list.files(dir[i]) #b�O�C�X�C�Ӥ@�ťؿ�(���)���C��xlsx��󪺦W��
 
   
   Sub_1 <- as.data.frame(read_excel(paste0(PathName,dir[i],sep=""),"Enrichment"))
