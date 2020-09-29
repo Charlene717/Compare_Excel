@@ -88,14 +88,15 @@ for(i in 1:n){         #對於每個一級目錄(文件夾)
   write_xlsx(list(Intersec = Intersect_1,Main = Main_1,Sub = Sub_1),paste0(PathName,"/",FolderName,"_Result_SUM","/S_Intersec_",MainFileName,"_AND_",SubFileName2))
   
   CountInterset[i] <- nrow(Intersect_1)
-  
   merge_1 <- rbind(merge_1,Intersect_1)
-  merge_1 <- merge_1[!is.na(merge_1$GroupID),]
+
 #  SumTable[i] <- c(SubFileName,CountInterset)
 #  SubFileName[i] <- SubFileName
 #  }
 
 }
+merge_1 <- merge_1[!is.na(merge_1$Term),]
+merge_2<- unique(merge_1)
 
 SumTable <- as.data.frame(cbind(SubFileName,CountInterset))
 write_xlsx(SumTable,paste0(PathName,"/",FolderName,"_Result_SUM","/S_Intersec_",MainFileName,"_SumTable.xlsx"))
