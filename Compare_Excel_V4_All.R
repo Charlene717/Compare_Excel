@@ -58,6 +58,8 @@ n = length(dir)                                       #讀取dir長度，也就是：總共
 Intersect_1 <- c()
 CountInterset <- c()
 SubFileName <- c()
+merge_1 <- as.data.frame(matrix(nrow=1,ncol=9))
+names(merge_1)<-c('GroupID','Category','Term','Description','LogP','Log(q-value)','InTerm_InList','Genes','Symbols')
 
 for(i in 1:n){         #對於每個一級目錄(文件夾)
   b=list.files(dir[i]) #b是列出每個一級目錄(文件夾)中每個xlsx文件的名稱
@@ -72,17 +74,22 @@ for(i in 1:n){         #對於每個一級目錄(文件夾)
   Intersect_1<- semi_join(Main_1,Sub_1,by="Term")
   Intersect_1<- unique(Intersect_1, by = "Term")
 #  dim(Intersect_1)
+  names(Intersect_1)<-c('GroupID','Category','Term','Description','LogP','Log(q-value)','InTerm_InList','Genes','Symbols')
   
   write_xlsx(list(Intersec = Intersect_1,Main = Main_1,Sub = Sub_1),paste0(PathName,"/",FolderName,"_Result_All","/Intersec_",MainFileName,"_AND_",SubFileName2))
   
   CountInterset[i] <- nrow(Intersect_1)
+  merge_1 <- rbind(merge_1,Intersect_1)
+  
 #  SumTable[i] <- c(SubFileName,CountInterset)
 #  SubFileName[i] <- SubFileName
  
 }
+merge_1 <- merge_1[!is.na(merge_1$Term),]
+merge_2<- unique(merge_1)
 
 SumTable <- as.data.frame(cbind(SubFileName,CountInterset))
-write_xlsx(SumTable,paste0(PathName,"/",FolderName,"_Result_All","/Intersec_",MainFileName,"_SumTable.xlsx"))
+write_xlsx(list(Count = SumTable,merge = merge_2,merge_ori = merge_1),paste0(PathName,"/",FolderName,"_Result_All","/Intersec_",MainFileName,"_SumTable.xlsx"))
 
 
 ####################################################################################################################################################################################
