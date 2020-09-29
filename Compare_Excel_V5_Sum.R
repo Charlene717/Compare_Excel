@@ -90,6 +90,7 @@ for(i in 1:n){         #對於每個一級目錄(文件夾)
   CountInterset[i] <- nrow(Intersect_1)
   
   merge_1 <- rbind(merge_1,Intersect_1)
+  merge_1 <- merge_1[!is.na(merge_1$GroupID),]
 #  SumTable[i] <- c(SubFileName,CountInterset)
 #  SubFileName[i] <- SubFileName
 #  }
