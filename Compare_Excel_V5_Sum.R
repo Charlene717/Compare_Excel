@@ -97,6 +97,7 @@ for(i in 1:n){         #對於每個一級目錄(文件夾)
 }
 merge_1 <- merge_1[!is.na(merge_1$Term),]
 merge_2<- unique(merge_1)
+#merge_2<- unique(merge_1, by = c("Term"="Term","Description"="Description"))
 
 SumTable <- as.data.frame(cbind(SubFileName,CountInterset))
 write_xlsx(list(Count = SumTable,merge = merge_2,merge_ori = merge_1),paste0(PathName,"/",FolderName,"_Result_SUM","/S_Intersec_",MainFileName,"_SumTable.xlsx"))
