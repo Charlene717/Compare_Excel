@@ -71,8 +71,8 @@ for(i in 1:n){         #對於每個一級目錄(文件夾)
   SubFileName2 <- first_category_name[i]
 
   # https://www.zhihu.com/question/39755875  
-  Intersect_1<- semi_join(Main_1,Sub_1,by="Term")
-  Intersect_1<- unique(Intersect_1, by = "Term")
+  Intersect_1<- semi_join(Main_1,Sub_1,by = c("Term"="Term","Description"="Description"))
+  Intersect_1<- unique(Intersect_1, by = c("Term"="Term","Description"="Description"))
 #  dim(Intersect_1)
   names(Intersect_1)<-c('GroupID','Category','Term','Description','LogP','Log(q-value)','InTerm_InList','Genes','Symbols')
   
