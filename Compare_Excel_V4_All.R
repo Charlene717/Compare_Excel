@@ -43,10 +43,6 @@ library(writexl)
 
 ######### Loop
 
-
-FolderName = c("Metastasis") 
-
-
 Main_1 <- as.data.frame(read_excel(paste0(PathName,"/",MainFileName,".xlsx"),"Enrichment"))
 Main_1 <- data.table(Main_1)
 
